@@ -19,6 +19,8 @@ async function run(): Promise<void> {
 	const token = core.getInput('github-token', { required: true })
 	assert(token, 'GitHub token is required')
 
+	const traceArtifactGlob = core.getInput('trace-artifacts-glob', { required: false })
+
 	const context = github.context
 	assert(context.eventName === 'workflow_run', 'This action only supports workflow_run events')
 
@@ -38,6 +40,7 @@ async function run(): Promise<void> {
 		workflow,
 		runId,
 		attempt,
+		traceArtifactGlob,
 	})
 	core.setOutput('trace-id', traceId)
 	await writeSummary(traceId)
